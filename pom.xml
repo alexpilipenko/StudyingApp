@@ -7,6 +7,108 @@
     <groupId>studying.app</groupId>
     <artifactId>studying.app</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>studyapp</name>
 
-    
+
+    <properties>
+        <target.dir>${basedir}/${project.name}</target.dir>
+        <build.dir>${basedir}/../build</build.dir>
+        <classes.dir.prefix>${basedir}/target</classes.dir.prefix>
+        <webapp.dir>${classes.dir.prefix}/webapp</webapp.dir>
+        <webapp.source.dir>${basedir}/src/main/webapp</webapp.source.dir>
+    </properties>
+
+    <build>
+        <finalName>studyapp</finalName>
+        <defaultGoal>package</defaultGoal>
+        <directory>${target.dir}</directory>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <outputDirectory>${classes.dir.prefix}/classes</outputDirectory>
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+        <testOutputDirectory>${classes.dir.prefix}/test-classes</testOutputDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${web_app_dir}/WEB-INF/lib</outputDirectory>
+                            <excludeScope>provided</excludeScope>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <warSourceDirectory>${web.app.source.dir}</warSourceDirectory>
+                    <webappDirectory>${web_app_dir}</webappDirectory>
+                    <attachClasses>true</attachClasses>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>${webapp.source.dir}</directory>
+                            <targetPath>.</targetPath>
+                            <includes>
+                                <include>**/*.html</include>
+                                <include>**/web.xml</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <filtering>false</filtering>
+                            <directory>${webapp.source.dir}</directory>
+                            <targetPath>.</targetPath>
+                            <excludes>
+                                <exclude>**/*.html</exclude>
+                                <exclude>**/web.xml</exclude>
+                            </excludes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>clean-exploaded</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <tasks>
+                                <delete dir = "${webapp.dir}" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
