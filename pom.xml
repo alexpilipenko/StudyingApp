@@ -12,7 +12,7 @@
 
     <properties>
         <target.dir>${basedir}/${project.name}</target.dir>
-        <build.dir>${basedir}/../build</build.dir>
+        <build.dir>${basedir}/build</build.dir>
         <classes.dir.prefix>${basedir}/target</classes.dir.prefix>
         <webapp.dir>${classes.dir.prefix}/webapp</webapp.dir>
         <webapp.source.dir>${basedir}/src/main/webapp</webapp.source.dir>
@@ -49,7 +49,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${web_app_dir}/WEB-INF/lib</outputDirectory>
+                            <outputDirectory>${webapp.dir}/WEB-INF/lib</outputDirectory>
                             <excludeScope>provided</excludeScope>
                             <overWriteReleases>true</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -64,8 +64,8 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
                 <configuration>
-                    <warSourceDirectory>${web.app.source.dir}</warSourceDirectory>
-                    <webappDirectory>${web_app_dir}</webappDirectory>
+                    <warSourceDirectory>${webapp.source.dir}</warSourceDirectory>
+                    <webappDirectory>${webapp.dir}</webappDirectory>
                     <attachClasses>true</attachClasses>
                     <webResources>
                         <resource>
